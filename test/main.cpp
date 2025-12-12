@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include <cassert>
 
 
 double test1()
@@ -34,50 +33,47 @@ R"(<ValCurs Date="13.12.2025" name="Foreign Currency Market">
         <VunitRate>0,615323</VunitRate>
     </Valute>
 </ValCurs>)";
-    using namespace tinyxml2;
 
-    XMLDocument doc;
-    XMLError error = doc.Parse(xml_data.c_str());
+    tinyxml2::XMLDocument doc;
+    tinyxml2::XMLError res = doc.Parse(xml_data.c_str());
+    assert(res == tinyxml2::XML_SUCCESS);
 
-    if (error != XML_SUCCESS) {
-        std::cerr << "Ошибка парсинга XML: " << doc.ErrorName() << std::endl;
-        return 1;
-    }
+    tinyxml2::XMLElement* root = doc.RootElement();
+    assert(root != nullptr);
 
-    // Получаем корневой элемент
-    XMLElement* root = doc.FirstChildElement("ValCurs");
-    if (!root) {
-        std::cerr << "Корневой элемент ValCurs не найден!" << std::endl;
-        return 1;
-    }
+    tinyxml2::XMLElement* valute = root->FirstChildElement("Valute");
+    assert(valute != nullptr);
 
-    // Получаем дату из атрибута
-    const char* date = root->Attribute("Date");
-    if (date) {
-        std::cout << "Курсы валют на " << date << ":\n";
-    }
 
-    // Проходим по всем элементам Valute
-    for (XMLElement* valute = root->FirstChildElement("Valute");
-         valute != nullptr;
-         valute = valute->NextSiblingElement("Valute")) {
+    while (valute != nullptr) {
+        const char* id = valute->Attribute("ID");
+        std::cout << "ID: " << (id ? id : "нет") << std::endl;
 
-        // Получаем код валюты и номинал
-        const char* charCode = valute->FirstChildElement("CharCode")->GetText();
-        const char* nominal = valute->FirstChildElement("Nominal")->GetText();
-        const char* name = valute->FirstChildElement("Name")->GetText();
 
-        // Получаем значение Value
-        const char* value = valute->FirstChildElement("Value")->GetText();
+        tinyxml2::XMLElement* charCodeElem = valute->FirstChildElement("CharCode");
+        tinyxml2::XMLElement* nameElem = valute->FirstChildElement("Name");
+        tinyxml2::XMLElement* valueElem = valute->FirstChildElement("Value");
 
-        if (charCode && value) {
-            std::cout << charCode << " (" << (name ? name : "") << "): "
-                      << nominal << " единица = " << value << " руб." << std::endl;
+        if (charCodeElem && charCodeElem->GetText()) {
+            std::cout << "CharCode: " << charCodeElem->GetText() << std::endl;
         }
-         }
+
+        if (nameElem && nameElem->GetText()) {
+            std::cout << "Name: " << nameElem->GetText() << std::endl;
+        }
+
+        if (valueElem && valueElem->GetText()) {
+            std::cout << "Value: " << valueElem->GetText() << std::endl;
+        }
+
+        std::cout << "-------------------------" << std::endl;
 
 
-    return 0.0;
+        valute = valute->NextSiblingElement("Valute");
+    }
+
+
+    return 0;
 }
 
 
