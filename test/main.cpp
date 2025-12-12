@@ -6,7 +6,7 @@
 #include <string>
 
 
-double test1()
+void test1()
 {
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLError res = doc.Parse(DATA.c_str());
@@ -45,9 +45,12 @@ double test1()
 
         valute = valute->NextSiblingElement("Valute");
     }
+}
 
 
-    return 0;
+void test2()
+{
+
 }
 
 

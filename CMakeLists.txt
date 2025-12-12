@@ -4,6 +4,8 @@ project(bank_api)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY lib)
 
 add_executable(${PROJECT_NAME}
     ./src/main.cpp
@@ -21,3 +23,4 @@ endif ()
 target_include_directories(${PROJECT_NAME} PRIVATE
     ./include
 )
+target_link_libraries(${PROJECT_NAME} PRIVATE tinyxml2)
