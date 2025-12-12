@@ -1,12 +1,8 @@
 #include "httplib.h"
-#include <clocale>
-
 
 
 int main(int argc, char *argv[])
 {
-    std::setlocale(LC_ALL, "");
-
     httplib::Server svr;
     httplib::Client cbrf("http://www.cbr.ru");
 
