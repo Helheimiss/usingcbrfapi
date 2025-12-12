@@ -1,3 +1,9 @@
-//
-// Created by helh on 12.12.2025.
-//
+#include <iostream>
+
+
+int main(int argc, char *argv[])
+{
+    std::cout << "Hello World!" << std::endl;
+
+    return 0;
+}
