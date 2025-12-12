@@ -1,16 +1,21 @@
 #include "controller.h"
 
 
-double Convertor::ConvertValute(double count, std::string &CharCode)
+std::string Parser::GetValueByCharCode(std::string &CharCode)
 {
+    //TODO()
+    return "";
+}
 
-
-    return count;
+std::string Convertor::ConvertValute(double count, std::string &CharCode)
+{
+    //TODO()
+    return "";
 }
 
 
-double Convertor::ConvertValuteToValute(double count, std::string &CharCode1, std::string &CharCode2)
+std::string Convertor::ConvertValuteToValute(double count, std::string &CharCode1, std::string &CharCode2)
 {
-
-    return count;
+    //TODO()
+    return "";
 }
