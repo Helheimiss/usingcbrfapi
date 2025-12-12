@@ -10,8 +10,8 @@ public:
     Convertor() = default;
     ~Convertor() = default;
 
-    double GetCountValute(double count, std::string CharCode);
-    double ConvertValute(double count, std::string CharCode1, std::string CharCode2);
+    static double ConvertValute(double count, std::string& CharCode);
+    static double ConvertValuteToValute(double count, std::string& CharCode1, std::string& CharCode2);
 };
 
 
