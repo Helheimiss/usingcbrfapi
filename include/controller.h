@@ -4,8 +4,6 @@
 
 class Convertor
 {
-private:
-
 public:
     Convertor() = default;
     ~Convertor() = default;
