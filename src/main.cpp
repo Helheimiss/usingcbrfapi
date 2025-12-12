@@ -1,6 +1,6 @@
 #include "httplib.h"
 #include <controller.h>
-#include "tinyxml2.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -16,9 +16,7 @@ int main(int argc, char *argv[])
         std::string CharCode2 = req.path_params.at("CharCode2");
         double Count = std::stod(req.path_params.at("Count"));
 
-        std::string result = std::to_string(Convertor::ConvertValuteToValute(Count, CharCode1, CharCode2));
-
-
+        std::string result = Convertor::ConvertValuteToValute(Count, CharCode1, CharCode2);
         res.set_content(result, "text/plain");
     });
 

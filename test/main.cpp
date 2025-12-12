@@ -49,7 +49,7 @@ void PrintAllData()
 }
 
 
-void GetValueByCharCodeTest()
+void GetVunitRateByCharCodeTest()
 {
     assert(Parser::GetVunitRateByCharCode(DATA, "USD") == "79,7296");
     assert(Parser::GetVunitRateByCharCode(DATA, "NOK") == "7,89809");
@@ -59,7 +59,7 @@ void GetValueByCharCodeTest()
 
 int main(int argc, char *argv[])
 {
-    GetValueByCharCodeTest();
+    GetVunitRateByCharCodeTest();
 
 
     puts("done");
