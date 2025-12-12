@@ -10,7 +10,7 @@ add_executable(${PROJECT_NAME}
     ./src/controller.cpp
 )
 
-
+add_subdirectory(libs/tinyxml2)
 add_subdirectory(./test test_bank_api)
 
 if (MINGW)
