@@ -8,8 +8,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(${PROJECT_NAME}
     ./src/main.cpp
     ./src/controller.cpp
-        test/main.cpp
 )
+
+
+add_subdirectory(./test test_bank_api)
 
 if (MINGW)
     add_definitions(-D_WIN32_WINNT=0x0A00)
