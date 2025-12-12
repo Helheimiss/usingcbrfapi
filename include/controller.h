@@ -8,7 +8,7 @@ public:
     Parser() = default;
     ~Parser() = default;
 
-    static std::string GetValueByCharCode(std::string& CharCode);
+    static std::string GetVunitRateByCharCode(const std::string& data, const std::string& CharCode);
 };
 
 
