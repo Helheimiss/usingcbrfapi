@@ -70,6 +70,17 @@ std::string Convertor::ConvertValuteToValute(const std::string &data, double cou
         return ConvertValute(data, count, CharCode1);
 
     // TODO() OTHERS
+    std::string CC1result = ConvertValute(data, count, CharCode1);
+    std::string CC2result = ConvertValute(data, 1, CharCode2);
+    std::ranges::replace(CC1result, ',', '.');
+    std::ranges::replace(CC2result, ',', '.');
 
-    throw std::logic_error("Valute not found");
+    std::string result = std::to_string(
+        std::stod(CC1result) /
+        std::stod(CC2result)
+    );
+
+    std::ranges::replace(CC2result, '.', ',');
+
+    return result;
 }
