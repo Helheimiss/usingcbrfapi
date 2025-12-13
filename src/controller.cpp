@@ -6,10 +6,10 @@
 #include "tinyxml2.h"
 
 
-std::string Parser::GetVunitRateByCharCode(const std::string& data, const std::string& CharCode)
+std::string Parser::GetVunitRateByCharCode(const std::string_view data, const std::string_view CharCode)
 {
     tinyxml2::XMLDocument doc;
-    tinyxml2::XMLError res = doc.Parse(data.c_str());
+    tinyxml2::XMLError res = doc.Parse(data.data());
     assert(res == tinyxml2::XML_SUCCESS);
 
     tinyxml2::XMLElement* root = doc.RootElement();
@@ -28,7 +28,7 @@ std::string Parser::GetVunitRateByCharCode(const std::string& data, const std::s
             CC && VE &&
             CC->GetText() &&
             VE->GetText() &&
-            strcmp(CharCode.c_str(), CC->GetText()) == 0)
+            strcmp(CharCode.data(), CC->GetText()) == 0)
         {
             return VE->GetText();
         }
@@ -41,7 +41,7 @@ std::string Parser::GetVunitRateByCharCode(const std::string& data, const std::s
 }
 
 
-std::string Convertor::ConvertValute(const std::string &data, double count, const std::string &CharCode)
+std::string Convertor::ConvertValute(const std::string_view data, double count, const std::string_view CharCode)
 {
     std::string VunitRate = Parser::GetVunitRateByCharCode(data, CharCode);
     std::ranges::replace(VunitRate, ',', '.');
@@ -53,8 +53,8 @@ std::string Convertor::ConvertValute(const std::string &data, double count, cons
 }
 
 
-std::string Convertor::ConvertValuteToValute(const std::string &data, double count, const std::string &CharCode1,
-    const std::string &CharCode2) {
+std::string Convertor::ConvertValuteToValute(const std::string_view data, double count, const std::string_view CharCode1, const std::string_view CharCode2)
+{
     if (CharCode1 == CharCode2) throw std::logic_error("currency is the same");
 
 
@@ -69,7 +69,7 @@ std::string Convertor::ConvertValuteToValute(const std::string &data, double cou
     if (CharCode2 == "RUB")
         return ConvertValute(data, count, CharCode1);
 
-    // TODO() OTHERS
+
     std::string CC1result = ConvertValute(data, count, CharCode1);
     std::string CC2result = ConvertValute(data, 1, CharCode2);
     std::ranges::replace(CC1result, ',', '.');
