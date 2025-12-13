@@ -60,6 +60,7 @@ void GetVunitRateByCharCodeTest()
 int main(int argc, char *argv[])
 {
     GetVunitRateByCharCodeTest();
+    std::cout << Convertor::ConvertValute(DATA, 30, "USDf") << std::endl;
 
 
     puts("done");

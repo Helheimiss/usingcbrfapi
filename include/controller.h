@@ -8,7 +8,7 @@ public:
     Parser() = default;
     ~Parser() = default;
 
-    static std::string GetVunitRateByCharCode(const std::string& data, const std::string& CharCode);
+    static std::string GetVunitRateByCharCode(const std::string& data, const std::string& CharCode) noexcept(false);
 };
 
 
@@ -18,8 +18,8 @@ public:
     Convertor() = default;
     ~Convertor() = default;
 
-    static std::string ConvertValute(double count, std::string& CharCode);
-    static std::string ConvertValuteToValute(double count, std::string& CharCode1, std::string& CharCode2);
+    static std::string ConvertValute(const std::string& data, double count, const std::string& CharCode);
+    static std::string ConvertValuteToValute(const std::string& data, double count, const std::string& CharCode1, const std::string& CharCode2);
 };
 
 

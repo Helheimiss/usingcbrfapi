@@ -1,4 +1,8 @@
 #include "controller.h"
+
+#include <algorithm>
+#include <stdexcept>
+
 #include "tinyxml2.h"
 
 
@@ -33,18 +37,22 @@ std::string Parser::GetVunitRateByCharCode(const std::string& data, const std::s
         valute = valute->NextSiblingElement("Valute");
     }
 
-
-    return "";
+   throw std::logic_error("Valute not found");
 }
 
-std::string Convertor::ConvertValute(double count, std::string &CharCode)
+
+std::string Convertor::ConvertValute(const std::string &data, double count, const std::string &CharCode)
 {
-    //TODO()
-    return "";
+    std::string result = Parser::GetVunitRateByCharCode(data, CharCode);
+    std::ranges::replace(result, ',', '.');
+
+
+    return std::to_string(count * std::stod(result));
 }
 
 
-std::string Convertor::ConvertValuteToValute(double count, std::string &CharCode1, std::string &CharCode2)
+std::string Convertor::ConvertValuteToValute(const std::string &data, double count, const std::string &CharCode1,
+    const std::string &CharCode2)
 {
     //TODO()
     return "";
