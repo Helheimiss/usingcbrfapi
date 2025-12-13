@@ -6,7 +6,7 @@
 #include "tinyxml2.h"
 
 
-std::string Parser::GetVunitRateByCharCode(const std::string_view data, const std::string_view CharCode)
+std::string Parser::GetVunitRateByCharCode(std::string_view data, std::string_view CharCode)
 {
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLError res = doc.Parse(data.data());
@@ -41,7 +41,7 @@ std::string Parser::GetVunitRateByCharCode(const std::string_view data, const st
 }
 
 
-std::string Convertor::ConvertValute(const std::string_view data, double count, const std::string_view CharCode)
+std::string Convertor::ConvertValute(std::string_view data, double count, std::string_view CharCode)
 {
     std::string VunitRate = Parser::GetVunitRateByCharCode(data, CharCode);
     std::ranges::replace(VunitRate, ',', '.');
@@ -53,7 +53,7 @@ std::string Convertor::ConvertValute(const std::string_view data, double count, 
 }
 
 
-std::string Convertor::ConvertValuteToValute(const std::string_view data, double count, const std::string_view CharCode1, const std::string_view CharCode2)
+std::string Convertor::ConvertValuteToValute(std::string_view data, double count, std::string_view CharCode1, std::string_view CharCode2)
 {
     if (CharCode1 == CharCode2) throw std::logic_error("currency is the same");
 
@@ -75,12 +75,13 @@ std::string Convertor::ConvertValuteToValute(const std::string_view data, double
     std::ranges::replace(CC1result, ',', '.');
     std::ranges::replace(CC2result, ',', '.');
 
+
     std::string result = std::to_string(
         std::stod(CC1result) /
         std::stod(CC2result)
     );
 
-    std::ranges::replace(CC2result, '.', ',');
 
+    std::ranges::replace(CC2result, '.', ',');
     return result;
 }
