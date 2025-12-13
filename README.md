@@ -22,7 +22,7 @@ C++ HTTP server for currency conversion using Central Bank of Russia (CBR) API.
 
 ## API Usage
 ```bash
-curl http://localhost:8080/100/USD # Convert to Rubles
+curl http://localhost:8080/100/USD # Convert to RUB
 ```
 
 Convert Between Currencies

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 
 
@@ -9,6 +10,7 @@ public:
     ~Parser() = default;
 
     static std::string GetVunitRateByCharCode(std::string_view data, std::string_view CharCode) noexcept(false);
+    static std::unique_ptr<std::string> GetAllCharCodeAndName(std::string_view data) noexcept(false);
 };
 
 

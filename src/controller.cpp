@@ -6,7 +6,7 @@
 #include "tinyxml2.h"
 
 
-std::string Parser::GetVunitRateByCharCode(std::string_view data, std::string_view CharCode)
+std::string Parser::GetVunitRateByCharCode(std::string_view data, std::string_view CharCode) noexcept(false)
 {
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLError res = doc.Parse(data.data());
@@ -38,6 +38,44 @@ std::string Parser::GetVunitRateByCharCode(std::string_view data, std::string_vi
     }
 
    throw std::logic_error("Valute not found");
+}
+
+std::unique_ptr<std::string> Parser::GetAllCharCodeAndName(std::string_view data) noexcept(false)
+{
+    tinyxml2::XMLDocument doc;
+    tinyxml2::XMLError res = doc.Parse(data.data());
+    assert(res == tinyxml2::XML_SUCCESS);
+
+    tinyxml2::XMLElement* root = doc.RootElement();
+    assert(root != nullptr);
+
+    tinyxml2::XMLElement* valute = root->FirstChildElement("Valute");
+    assert(valute != nullptr);
+
+
+    std::unique_ptr<std::string> result = std::make_unique<std::string>();
+    while (valute != nullptr)
+    {
+        tinyxml2::XMLElement* CC = valute->FirstChildElement("CharCode");
+        tinyxml2::XMLElement* NE = valute->FirstChildElement("Name");
+
+        if (
+            CC && NE &&
+            CC->GetText() &&
+            NE->GetText())
+        {
+            result->append(CC->GetText())
+                    .append(" ")
+                    .append(NE->GetText())
+                    .append("\n");
+        }
+
+
+        valute = valute->NextSiblingElement("Valute");
+    }
+
+
+    return result;
 }
 
 
