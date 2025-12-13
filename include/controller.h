@@ -18,6 +18,7 @@ class Convertor
 {
 private:
     //TODO() FPU() format
+    static void FormatFPU(std::string& Str, char NewCh) noexcept(false);
 
 public:
     Convertor() = default;

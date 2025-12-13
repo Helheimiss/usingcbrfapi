@@ -79,13 +79,21 @@ std::unique_ptr<std::string> Parser::GetAllCharCodeAndName(std::string_view data
 }
 
 
+void Convertor::FormatFPU(std::string &Str, char NewCh) noexcept(false)
+{
+    if (NewCh == '.') std::ranges::replace(Str, ',', NewCh);
+    else if (NewCh == ',') std::ranges::replace(Str, '.', NewCh);
+    else throw std::invalid_argument("Invalid character");
+}
+
+
 std::string Convertor::ConvertValute(std::string_view data, double count, std::string_view CharCode)
 {
     std::string VunitRate = Parser::GetVunitRateByCharCode(data, CharCode);
-    std::ranges::replace(VunitRate, ',', '.');
+    FormatFPU(VunitRate, '.');
 
     std::string result = std::to_string(count * std::stod(VunitRate));
-    std::ranges::replace(result, '.', ',');
+    FormatFPU(VunitRate, ',');
 
     return result;
 }
@@ -99,7 +107,7 @@ std::string Convertor::ConvertValuteToValute(std::string_view data, double count
     if (CharCode1 == "RUB")
     {
         std::string result = std::to_string(count / std::stod(ConvertValute(data, 1, CharCode2)));
-        std::ranges::replace(result, '.', ',');
+        FormatFPU(result, ',');
 
         return result;
     }
@@ -110,8 +118,8 @@ std::string Convertor::ConvertValuteToValute(std::string_view data, double count
 
     std::string CC1result = ConvertValute(data, count, CharCode1);
     std::string CC2result = ConvertValute(data, 1, CharCode2);
-    std::ranges::replace(CC1result, ',', '.');
-    std::ranges::replace(CC2result, ',', '.');
+    FormatFPU(CC1result, '.');
+    FormatFPU(CC2result, '.');
 
 
     std::string result = std::to_string(
@@ -120,6 +128,7 @@ std::string Convertor::ConvertValuteToValute(std::string_view data, double count
     );
 
 
-    std::ranges::replace(CC2result, '.', ',');
+
+    FormatFPU(CC2result, ',');
     return result;
 }
