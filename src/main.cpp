@@ -13,10 +13,11 @@ int main(int argc, char *argv[])
 
     svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
         const char *usage = R"(usage:
-    /                               - help page                     # this page
-    /CharCodes                      - print all CharCodes and Names
-    /:Count/:CharCode               - example /100/USD              # Convert to RUB
-    /:Count/:CharCode1/:CharCode2   - example /50/EUR/USD           # Converts 50 EUR to USD )";
+    FFPU = <0/1>                            - Format Floating Point Unit    # (default FFPU=0) if 0 then FPU = , else FPU = .
+    /                                       - help page                     # this page
+    /CharCodes                              - print all CharCodes and Names # iso 4217
+    /:Count/:CharCode?FFPU=0                - example /100/USD/1            # Convert to RUB
+    /:Count/:CharCode1/:CharCode2?FFPU=0    - example /50/EUR/USD/          # Converts 50 EUR to USD )";
 
         res.set_content(usage, "text/plain");
     });
@@ -27,22 +28,43 @@ int main(int argc, char *argv[])
     });
 
 
+    svr.Get("/:Count/:CharCode", [](const httplib::Request& req, httplib::Response& res) {
+        std::string CharCode = req.path_params.at("CharCode");
+        double Count = std::stod(req.path_params.at("Count"));
+        std::string param;
+        std::string FFPUResult;
+
+        if (req.has_param("FFPU"))
+            param = req.get_param_value("FFPU");
+
+        if (param == "1")
+            FFPUResult = Convertor::ConvertValute(CBRF_DATA, Count, CharCode, '.');
+        else
+            FFPUResult = Convertor::ConvertValute(CBRF_DATA, Count, CharCode, ',');
+
+
+        res.set_content(FFPUResult, "text/plain");
+    });
+
+
     svr.Get("/:Count/:CharCode1/:CharCode2", [](const httplib::Request& req, httplib::Response& res) {
         std::string CharCode1 = req.path_params.at("CharCode1");
         std::string CharCode2 = req.path_params.at("CharCode2");
         double Count = std::stod(req.path_params.at("Count"));
-
-        std::string result = Convertor::ConvertValuteToValute(CBRF_DATA, Count, CharCode1, CharCode2);
-        res.set_content(result, "text/plain");
-    });
+        std::string param;
+        std::string FFPUResult;
 
 
-    svr.Get("/:Count/:CharCode", [](const httplib::Request& req, httplib::Response& res) {
-        std::string CharCode = req.path_params.at("CharCode");
-        double Count = std::stod(req.path_params.at("Count"));
+        if (req.has_param("FFPU"))
+            param = req.get_param_value("FFPU");
 
-        std::string result = Convertor::ConvertValute(CBRF_DATA, Count, CharCode);
-        res.set_content(result, "text/plain");
+        if (param == "1")
+            FFPUResult = Convertor::ConvertValuteToValute(CBRF_DATA, Count, CharCode1, CharCode2, '.');
+        else
+            FFPUResult = Convertor::ConvertValuteToValute(CBRF_DATA, Count, CharCode1, CharCode2, ',');
+
+
+        res.set_content(FFPUResult, "text/plain");
     });
 
 

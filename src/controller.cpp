@@ -87,37 +87,37 @@ void Convertor::FormatFPU(std::string &Str, char NewCh) noexcept(false)
 }
 
 
-std::string Convertor::ConvertValute(std::string_view data, double count, std::string_view CharCode)
+std::string Convertor::ConvertValute(std::string_view data, double count, std::string_view CharCode, char FFPU)
 {
     std::string VunitRate = Parser::GetVunitRateByCharCode(data, CharCode);
     FormatFPU(VunitRate, '.');
 
     std::string result = std::to_string(count * std::stod(VunitRate));
-    FormatFPU(VunitRate, ',');
+    FormatFPU(result, FFPU);
 
     return result;
 }
 
 
-std::string Convertor::ConvertValuteToValute(std::string_view data, double count, std::string_view CharCode1, std::string_view CharCode2)
+std::string Convertor::ConvertValuteToValute(std::string_view data, double count, std::string_view CharCode1, std::string_view CharCode2, char FFPU)
 {
     if (CharCode1 == CharCode2) throw std::logic_error("currency is the same");
 
 
     if (CharCode1 == "RUB")
     {
-        std::string result = std::to_string(count / std::stod(ConvertValute(data, 1, CharCode2)));
-        FormatFPU(result, ',');
+        std::string result = std::to_string(count / std::stod(ConvertValute(data, 1, CharCode2, FFPU)));
+        FormatFPU(result, FFPU);
 
         return result;
     }
 
     if (CharCode2 == "RUB")
-        return ConvertValute(data, count, CharCode1);
+        return ConvertValute(data, count, CharCode1, FFPU);
 
 
-    std::string CC1result = ConvertValute(data, count, CharCode1);
-    std::string CC2result = ConvertValute(data, 1, CharCode2);
+    std::string CC1result = ConvertValute(data, count, CharCode1, FFPU);
+    std::string CC2result = ConvertValute(data, 1, CharCode2, FFPU);
     FormatFPU(CC1result, '.');
     FormatFPU(CC2result, '.');
 
@@ -129,6 +129,6 @@ std::string Convertor::ConvertValuteToValute(std::string_view data, double count
 
 
 
-    FormatFPU(CC2result, ',');
+    FormatFPU(result, FFPU);
     return result;
 }

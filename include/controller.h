@@ -26,8 +26,8 @@ public:
 
 
 
-    static std::string ConvertValute(std::string_view data, double count, std::string_view CharCode);
-    static std::string ConvertValuteToValute(std::string_view data, double count, std::string_view CharCode1, std::string_view CharCode2);
+    static std::string ConvertValute(std::string_view data, double count, std::string_view CharCode, char FFPU);
+    static std::string ConvertValuteToValute(std::string_view data, double count, std::string_view CharCode1, std::string_view CharCode2, char FFPU);
 };
 
 
