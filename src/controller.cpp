@@ -69,5 +69,7 @@ std::string Convertor::ConvertValuteToValute(const std::string &data, double cou
     if (CharCode2 == "RUB")
         return ConvertValute(data, count, CharCode1);
 
+    // TODO() OTHERS
+
     throw std::logic_error("Valute not found");
 }
