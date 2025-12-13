@@ -10,6 +10,13 @@ int main(int argc, char *argv[])
         httplib::Client("http://www.cbr.ru")
         .Get("/scripts/XML_daily_eng.asp")->body;
 
+    svr.Get("/", [cbrf](const httplib::Request& req, httplib::Response& res) {
+        const char *usage = R"(usage:
+    /:Count/:CharCode
+    /:Count/:CharCode1/:CharCode2)";
+
+        res.set_content(usage, "text/plain");
+    });
 
     svr.Get("/:Count/:CharCode1/:CharCode2", [cbrf](const httplib::Request& req, httplib::Response& res) {
         std::string CharCode1 = req.path_params.at("CharCode1");
