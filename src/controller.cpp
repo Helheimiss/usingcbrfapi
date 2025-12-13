@@ -43,17 +43,31 @@ std::string Parser::GetVunitRateByCharCode(const std::string& data, const std::s
 
 std::string Convertor::ConvertValute(const std::string &data, double count, const std::string &CharCode)
 {
-    std::string result = Parser::GetVunitRateByCharCode(data, CharCode);
-    std::ranges::replace(result, ',', '.');
+    std::string VunitRate = Parser::GetVunitRateByCharCode(data, CharCode);
+    std::ranges::replace(VunitRate, ',', '.');
 
+    std::string result = std::to_string(count * std::stod(VunitRate));
+    std::ranges::replace(result, '.', ',');
 
-    return std::to_string(count * std::stod(result));
+    return result;
 }
 
 
 std::string Convertor::ConvertValuteToValute(const std::string &data, double count, const std::string &CharCode1,
-    const std::string &CharCode2)
-{
-    //TODO()
-    return "";
+    const std::string &CharCode2) {
+    if (CharCode1 == CharCode2) throw std::logic_error("currency is the same");
+
+
+    if (CharCode1 == "RUB")
+    {
+        std::string result = std::to_string(count / std::stod(ConvertValute(data, 1, CharCode2)));
+        std::ranges::replace(result, '.', ',');
+
+        return result;
+    }
+
+    if (CharCode2 == "RUB")
+        return ConvertValute(data, count, CharCode1);
+
+    throw std::logic_error("Valute not found");
 }

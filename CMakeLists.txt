@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY lib)
+set(bank_api__BUILD_TESTS ON)
 
 add_executable(${PROJECT_NAME}
     ./src/main.cpp
