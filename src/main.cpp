@@ -20,6 +20,14 @@ int main(int argc, char *argv[])
         res.set_content(result, "text/plain");
     });
 
+    svr.Get("/:Count/:CharCode", [cbrf](const httplib::Request& req, httplib::Response& res) {
+        std::string CharCode = req.path_params.at("CharCode");
+        double Count = std::stod(req.path_params.at("Count"));
+
+        std::string result = Convertor::ConvertValute(cbrf, Count, CharCode);
+        res.set_content(result, "text/plain");
+    });
+
     svr.listen("0.0.0.0", 8080);
 
     return 0;
