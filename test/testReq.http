@@ -1,4 +1,6 @@
-### GET request to example server
-GET http://127.0.0.1:8080/23/RUB/DVC
-###
+### /23/RUB/USD
+GET http://127.0.0.1:8080/23/RUB/USD
+### /23/USD/RUB
+GET http://127.0.0.1:8080/23/USD/RUB
+### /23/USD
 GET http://127.0.0.1:8080/23/USD
