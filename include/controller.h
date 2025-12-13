@@ -16,9 +16,14 @@ public:
 
 class Convertor
 {
+private:
+    //TODO() FPU() format
+
 public:
     Convertor() = default;
     ~Convertor() = default;
+
+
 
     static std::string ConvertValute(std::string_view data, double count, std::string_view CharCode);
     static std::string ConvertValuteToValute(std::string_view data, double count, std::string_view CharCode1, std::string_view CharCode2);

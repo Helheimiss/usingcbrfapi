@@ -6,10 +6,10 @@ int main(int argc, char *argv[])
 {
     httplib::Server svr;
 
-    static std::string cbrf = httplib::Client("http://www.cbr.ru")
+    const static std::string CBRF_DATA = httplib::Client("http://www.cbr.ru")
         .Get("/scripts/XML_daily_eng.asp")->body;
 
-    const static std::unique_ptr<std::string> CC_AND_NAMES = Parser::GetAllCharCodeAndName(cbrf);
+    const static std::unique_ptr<std::string> CC_AND_NAMES = Parser::GetAllCharCodeAndName(CBRF_DATA);
 
     svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
         const char *usage = R"(usage:
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         std::string CharCode2 = req.path_params.at("CharCode2");
         double Count = std::stod(req.path_params.at("Count"));
 
-        std::string result = Convertor::ConvertValuteToValute(cbrf, Count, CharCode1, CharCode2);
+        std::string result = Convertor::ConvertValuteToValute(CBRF_DATA, Count, CharCode1, CharCode2);
         res.set_content(result, "text/plain");
     });
 
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         std::string CharCode = req.path_params.at("CharCode");
         double Count = std::stod(req.path_params.at("Count"));
 
-        std::string result = Convertor::ConvertValute(cbrf, Count, CharCode);
+        std::string result = Convertor::ConvertValute(CBRF_DATA, Count, CharCode);
         res.set_content(result, "text/plain");
     });
 
