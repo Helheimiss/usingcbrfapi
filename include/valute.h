@@ -9,7 +9,7 @@ class Valute {
 
     double VunitRate;
 public:
-    Valute(std::string ID, std::string NumCode, std::string Name, double VunitRate);
+    Valute(std::string_view ID, std::string_view NumCode, std::string_view Name, double VunitRate);
 
     std::string_view GetID();
     std::string_view GetNumCode();
