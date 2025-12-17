@@ -1,6 +1,8 @@
 #include "convertor.h"
 
 #include <algorithm>
+#include <functional>
+#include <ranges>
 #include <stdexcept>
 
 #include "tinyxml2.h"
@@ -13,11 +15,27 @@ void convertor::FormatFPU(std::string &Str, char NewCh) noexcept(false)
     else throw std::invalid_argument("Invalid character");
 }
 
-convertor::convertor(std::string_view data) : ValuteMap(CreateMap(data)) {
+std::string convertor::GetAllData()
+{
+    std::string res;
+
+    for (const auto &key: ValuteMap | std::views::keys)
+    {
+        res.append(key)
+        .append(" ")
+        .append(ValuteMap.at(key).GetName())
+        .append("\n");
+    }
+
+    return res;
 }
 
+convertor::convertor(std::string_view data) : ValuteMap(CreateMap(data))
+{ }
 
-std::map<std::string, valute> convertor::CreateMap(std::string_view data) {
+
+std::map<std::string, valute> convertor::CreateMap(std::string_view data)
+{
     std::map<std::string, valute> ValuteMap;
 
     tinyxml2::XMLDocument doc;
@@ -65,14 +83,14 @@ std::map<std::string, valute> convertor::CreateMap(std::string_view data) {
 }
 
 
-double convertor::ConvertValute(double count, std::string CharCode)
+double convertor::ConvertValute(double count, const std::string &CharCode)
 {
     double VunitRate = ValuteMap.at(CharCode).GetVunitRate();
     return count * VunitRate;
 }
 
 
-double convertor::ConvertValuteToValute(double count, std::string CharCode1, std::string CharCode2)
+double convertor::ConvertValuteToValute(double count, const std::string &CharCode1, const std::string &CharCode2)
 {
     if (CharCode1 == CharCode2) throw std::logic_error("currency is the same");
 

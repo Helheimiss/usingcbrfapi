@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
         .Get("/scripts/XML_daily_eng.asp")->body;
 
     static convertor conv(CBRF_DATA);
+    static std::string AllData = conv.GetAllData();
 
     svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
         const char *usage = R"(usage:
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
 
 
     svr.Get("/CharCodes", [](const httplib::Request& req, httplib::Response& res) {
-        res.set_content("TODO()", "text/plain"); // TODO()
+        res.set_content(AllData.c_str(), "text/plain");
     });
 
 
