@@ -9,16 +9,17 @@
 class Convertor
 {
 private:
-    static void FormatFPU(std::string& Str, char NewCh) noexcept(false);
 
+    std::map<std::string, Valute> ValuteMap;
+    static std::map<std::string, Valute> CreateMap(std::string_view data);
 public:
-    Convertor() = default;
+    Convertor(std::string_view data);
     ~Convertor() = default;
 
-    static std::map<std::string, Valute> CreateMap(std::string_view data);
 
-    static double ConvertValute(std::map<std::string, Valute>& ValuteMap, double count, std::string CharCode);
-    static double ConvertValuteToValute(std::map<std::string, Valute>& ValuteMap, double count, std::string CharCode1, std::string CharCode2);
+    static void FormatFPU(std::string& Str, char NewCh) noexcept(false);
+    double ConvertValute(double count, std::string CharCode);
+    double ConvertValuteToValute(double count, std::string CharCode1, std::string CharCode2);
 };
 
 

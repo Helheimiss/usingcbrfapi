@@ -13,6 +13,9 @@ void Convertor::FormatFPU(std::string &Str, char NewCh) noexcept(false)
     else throw std::invalid_argument("Invalid character");
 }
 
+Convertor::Convertor(std::string_view data) : ValuteMap(CreateMap(data)) {
+}
+
 
 std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
     std::map<std::string, Valute> ValuteMap;
@@ -62,29 +65,27 @@ std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
 }
 
 
-double Convertor::ConvertValute(std::map<std::string, Valute>& ValuteMap, double count, std::string CharCode)
+double Convertor::ConvertValute(double count, std::string CharCode)
 {
     double VunitRate = ValuteMap.at(CharCode).GetVunitRate();
     return count * VunitRate;
 }
 
 
-double Convertor::ConvertValuteToValute(std::map<std::string, Valute>& ValuteMap, double count, std::string CharCode1, std::string CharCode2)
+double Convertor::ConvertValuteToValute(double count, std::string CharCode1, std::string CharCode2)
 {
     if (CharCode1 == CharCode2) throw std::logic_error("currency is the same");
 
 
     if (CharCode1 == "RUB")
-    {
-        return count / ConvertValute(ValuteMap, 1, CharCode2);
-    }
+        return count / ConvertValute(1, CharCode2);
 
     if (CharCode2 == "RUB")
-        return ConvertValute(ValuteMap, count, CharCode1);
+        return ConvertValute(count, CharCode1);
 
 
-    double CC1result = ConvertValute(ValuteMap, count, CharCode1);
-    double CC2result = ConvertValute(ValuteMap, 1, CharCode2);
+    double CC1result = ConvertValute(count, CharCode1);
+    double CC2result = ConvertValute(1, CharCode2);
 
     return CC1result / CC2result;
 }

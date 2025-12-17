@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     const static std::string CBRF_DATA = httplib::Client("http://www.cbr.ru")
         .Get("/scripts/XML_daily_eng.asp")->body;
 
-    static std::map<std::string, Valute> ValuteMap = Convertor::CreateMap(CBRF_DATA);
+    static Convertor conv(CBRF_DATA);
 
     svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
         const char *usage = R"(usage:
@@ -38,10 +38,11 @@ int main(int argc, char *argv[])
             param = req.get_param_value("FFPU");
 
         if (param == "1") {
-            FFPUResult = std::to_string(Convertor::ConvertValute(ValuteMap, Count, CharCode));
+            FFPUResult = std::to_string(conv.ConvertValute(Count, CharCode));
         }
         else {
-            FFPUResult = std::to_string(Convertor::ConvertValute(ValuteMap, Count, CharCode));
+            FFPUResult = std::to_string(conv.ConvertValute(Count, CharCode));
+            Convertor::FormatFPU(FFPUResult, ',');
         }
 
 
@@ -61,10 +62,11 @@ int main(int argc, char *argv[])
             param = req.get_param_value("FFPU");
 
         if (param == "1") {
-            FFPUResult = std::to_string(Convertor::ConvertValuteToValute(ValuteMap, Count, CharCode1, CharCode2));
+            FFPUResult = std::to_string(conv.ConvertValuteToValute(Count, CharCode1, CharCode2));
         }
         else {
-            FFPUResult = std::to_string(Convertor::ConvertValuteToValute(ValuteMap, Count, CharCode1, CharCode2));
+            FFPUResult = std::to_string(conv.ConvertValuteToValute(Count, CharCode1, CharCode2));
+            Convertor::FormatFPU(FFPUResult, ',');
         }
 
 
