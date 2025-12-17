@@ -87,6 +87,56 @@ void Convertor::FormatFPU(std::string &Str, char NewCh) noexcept(false)
 }
 
 
+std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
+    std::map<std::string, Valute> ValuteMap;
+
+    tinyxml2::XMLDocument doc;
+    tinyxml2::XMLError res = doc.Parse(data.data());
+    assert(res == tinyxml2::XML_SUCCESS);
+
+    tinyxml2::XMLElement* root = doc.RootElement();
+    assert(root != nullptr);
+
+    tinyxml2::XMLElement* valute = root->FirstChildElement("Valute");
+    assert(valute != nullptr);
+
+    while (valute != nullptr)
+    {
+        tinyxml2::XMLElement* CharCode = valute->FirstChildElement("CharCode");
+        tinyxml2::XMLElement* ID = valute->FirstChildElement("ID");
+        tinyxml2::XMLElement* NumCode = valute->FirstChildElement("NumCode");
+        tinyxml2::XMLElement* Name = valute->FirstChildElement("Name");
+        tinyxml2::XMLElement* VunitRate = valute->FirstChildElement("VunitRate");
+
+        if (
+            CharCode && ID && NumCode && Name && VunitRate &&
+            CharCode->GetText() &&
+            ID->GetText() &&
+            NumCode->GetText() &&
+            Name->GetText() &&
+            VunitRate->GetText()
+            )
+        {
+
+            std::string vr = VunitRate->GetText();
+            FormatFPU(vr, '.');
+
+            ValuteMap.emplace(
+            CharCode->GetText(),
+            Valute(ID->GetText(),
+            NumCode->GetText(),
+            Name->GetText(),
+            std::stod(vr)));
+        }
+
+
+        valute = valute->NextSiblingElement("Valute");
+    }
+
+
+    return ValuteMap;
+}
+
 std::string Convertor::ConvertValute(std::string_view data, double count, std::string_view CharCode, char FFPU)
 {
     std::string VunitRate = Parser::GetVunitRateByCharCode(data, CharCode);

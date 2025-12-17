@@ -1,7 +1,7 @@
 #include "valute.h"
 
 
-Valute::Valute(std::string_view ID, std::string_view &NumCode, std::string_view &Name, double VunitRate)
+Valute::Valute(std::string ID, std::string NumCode, std::string Name, double VunitRate)
     : ID(ID), NumCode(NumCode), Name(Name), VunitRate(VunitRate)
 {
 

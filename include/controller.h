@@ -1,6 +1,9 @@
 #pragma once
+#include <map>
 #include <memory>
 #include <string>
+
+#include "valute.h"
 
 
 class Parser
@@ -23,6 +26,7 @@ public:
     Convertor() = default;
     ~Convertor() = default;
 
+    static std::map<std::string, Valute> CreateMap(std::string_view data);
 
 
     static std::string ConvertValute(std::string_view data, double count, std::string_view CharCode, char FFPU);
