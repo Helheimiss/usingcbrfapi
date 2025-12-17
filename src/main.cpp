@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     const static std::string CBRF_DATA = httplib::Client("http://www.cbr.ru")
         .Get("/scripts/XML_daily_eng.asp")->body;
 
-    const static std::unique_ptr<std::string> CC_AND_NAMES = Parser::GetAllCharCodeAndName(CBRF_DATA);
+    static std::map<std::string, Valute> ValuteMap = Convertor::CreateMap(CBRF_DATA);
 
     svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
         const char *usage = R"(usage:
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
 
     svr.Get("/CharCodes", [](const httplib::Request& req, httplib::Response& res) {
-        res.set_content(CC_AND_NAMES->c_str(), "text/plain");
+        res.set_content("TODO()", "text/plain"); // TODO()
     });
 
 
@@ -37,10 +37,12 @@ int main(int argc, char *argv[])
         if (req.has_param("FFPU"))
             param = req.get_param_value("FFPU");
 
-        if (param == "1")
-            FFPUResult = Convertor::ConvertValute(CBRF_DATA, Count, CharCode, '.');
-        else
-            FFPUResult = Convertor::ConvertValute(CBRF_DATA, Count, CharCode, ',');
+        if (param == "1") {
+            FFPUResult = std::to_string(Convertor::ConvertValute(ValuteMap, Count, CharCode));
+        }
+        else {
+            FFPUResult = std::to_string(Convertor::ConvertValute(ValuteMap, Count, CharCode));
+        }
 
 
         res.set_content(FFPUResult, "text/plain");
@@ -58,10 +60,12 @@ int main(int argc, char *argv[])
         if (req.has_param("FFPU"))
             param = req.get_param_value("FFPU");
 
-        if (param == "1")
-            FFPUResult = Convertor::ConvertValuteToValute(CBRF_DATA, Count, CharCode1, CharCode2, '.');
-        else
-            FFPUResult = Convertor::ConvertValuteToValute(CBRF_DATA, Count, CharCode1, CharCode2, ',');
+        if (param == "1") {
+            FFPUResult = std::to_string(Convertor::ConvertValuteToValute(ValuteMap, Count, CharCode1, CharCode2));
+        }
+        else {
+            FFPUResult = std::to_string(Convertor::ConvertValuteToValute(ValuteMap, Count, CharCode1, CharCode2));
+        }
 
 
         res.set_content(FFPUResult, "text/plain");

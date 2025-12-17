@@ -30,15 +30,13 @@ std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
     while (valute != nullptr)
     {
         tinyxml2::XMLElement* CharCode = valute->FirstChildElement("CharCode");
-        tinyxml2::XMLElement* ID = valute->FirstChildElement("ID");
         tinyxml2::XMLElement* NumCode = valute->FirstChildElement("NumCode");
         tinyxml2::XMLElement* Name = valute->FirstChildElement("Name");
         tinyxml2::XMLElement* VunitRate = valute->FirstChildElement("VunitRate");
 
         if (
-            CharCode && ID && NumCode && Name && VunitRate &&
+            CharCode && NumCode && Name && VunitRate &&
             CharCode->GetText() &&
-            ID->GetText() &&
             NumCode->GetText() &&
             Name->GetText() &&
             VunitRate->GetText()
@@ -50,8 +48,7 @@ std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
 
             ValuteMap.emplace(
             CharCode->GetText(),
-            Valute(ID->GetText(),
-            NumCode->GetText(),
+            Valute(NumCode->GetText(),
             Name->GetText(),
             std::stod(vr)));
         }
@@ -63,6 +60,7 @@ std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
 
     return ValuteMap;
 }
+
 
 double Convertor::ConvertValute(std::map<std::string, Valute>& ValuteMap, double count, std::string CharCode)
 {
