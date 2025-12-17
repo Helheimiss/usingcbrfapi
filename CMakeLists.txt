@@ -10,7 +10,7 @@ set(bank_api__BUILD_TESTS ON)
 
 add_executable(${PROJECT_NAME}
     ./src/main.cpp
-    ./src/controller.cpp
+    ./src/convertor.cpp
     ./src/valute.cpp
 )
 

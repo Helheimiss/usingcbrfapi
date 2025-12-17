@@ -1,21 +1,21 @@
 #include "valute.h"
 
 
-Valute::Valute(std::string_view NumCode, std::string_view Name, double VunitRate)
+valute::valute(std::string_view NumCode, std::string_view Name, double VunitRate)
     : NumCode(NumCode), Name(Name), VunitRate(VunitRate)
 {
 
 }
 
 
-std::string_view Valute::GetNumCode() {
+std::string_view valute::GetNumCode() {
     return NumCode;
 }
 
-std::string_view Valute::GetName() {
+std::string_view valute::GetName() {
     return Name;
 }
 
-double Valute::GetVunitRate() {
+double valute::GetVunitRate() {
     return VunitRate;
 }

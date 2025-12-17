@@ -1,5 +1,5 @@
 #include "httplib.h"
-#include <controller.h>
+#include <convertor.h>
 
 
 int main(int argc, char *argv[])
@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     const static std::string CBRF_DATA = httplib::Client("http://www.cbr.ru")
         .Get("/scripts/XML_daily_eng.asp")->body;
 
-    static Convertor conv(CBRF_DATA);
+    static convertor conv(CBRF_DATA);
 
     svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
         const char *usage = R"(usage:
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         }
         else {
             FFPUResult = std::to_string(conv.ConvertValute(Count, CharCode));
-            Convertor::FormatFPU(FFPUResult, ',');
+            convertor::FormatFPU(FFPUResult, ',');
         }
 
 
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
         }
         else {
             FFPUResult = std::to_string(conv.ConvertValuteToValute(Count, CharCode1, CharCode2));
-            Convertor::FormatFPU(FFPUResult, ',');
+            convertor::FormatFPU(FFPUResult, ',');
         }
 
 

@@ -4,7 +4,7 @@
 #include <string>
 
 #include "data.h"
-#include "controller.h"
+#include "convertor.h"
 
 
 void PrintAllData()
@@ -59,14 +59,14 @@ void GetVunitRateByCharCodeTest()
 
 void ConvertValuteTest()
 {
-    assert(Convertor::ConvertValute(DATA, 1, "USD", ',') == "79,729600");
+    assert(convertor::ConvertValute(DATA, 1, "USD", ',') == "79,729600");
 }
 
 
 void ConvertValuteToValuteTest()
 {
-    assert(Convertor::ConvertValuteToValute(DATA, 2, "RUB", "USD", ',') == "0,025316");
-    assert(Convertor::ConvertValuteToValute(DATA, 2, "USD", "RUB", ',') == "159,459200");
+    assert(convertor::ConvertValuteToValute(DATA, 2, "RUB", "USD", ',') == "0,025316");
+    assert(convertor::ConvertValuteToValute(DATA, 2, "USD", "RUB", ',') == "159,459200");
 }
 
 

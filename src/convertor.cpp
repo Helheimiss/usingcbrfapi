@@ -1,4 +1,4 @@
-#include "controller.h"
+#include "convertor.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -6,19 +6,19 @@
 #include "tinyxml2.h"
 
 
-void Convertor::FormatFPU(std::string &Str, char NewCh) noexcept(false)
+void convertor::FormatFPU(std::string &Str, char NewCh) noexcept(false)
 {
     if (NewCh == '.') std::ranges::replace(Str, ',', NewCh);
     else if (NewCh == ',') std::ranges::replace(Str, '.', NewCh);
     else throw std::invalid_argument("Invalid character");
 }
 
-Convertor::Convertor(std::string_view data) : ValuteMap(CreateMap(data)) {
+convertor::convertor(std::string_view data) : ValuteMap(CreateMap(data)) {
 }
 
 
-std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
-    std::map<std::string, Valute> ValuteMap;
+std::map<std::string, valute> convertor::CreateMap(std::string_view data) {
+    std::map<std::string, valute> ValuteMap;
 
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLError res = doc.Parse(data.data());
@@ -27,15 +27,15 @@ std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
     tinyxml2::XMLElement* root = doc.RootElement();
     assert(root != nullptr);
 
-    tinyxml2::XMLElement* valute = root->FirstChildElement("Valute");
-    assert(valute != nullptr);
+    tinyxml2::XMLElement* valute_root = root->FirstChildElement("Valute");
+    assert(valute_root != nullptr);
 
-    while (valute != nullptr)
+    while (valute_root != nullptr)
     {
-        tinyxml2::XMLElement* CharCode = valute->FirstChildElement("CharCode");
-        tinyxml2::XMLElement* NumCode = valute->FirstChildElement("NumCode");
-        tinyxml2::XMLElement* Name = valute->FirstChildElement("Name");
-        tinyxml2::XMLElement* VunitRate = valute->FirstChildElement("VunitRate");
+        tinyxml2::XMLElement* CharCode = valute_root->FirstChildElement("CharCode");
+        tinyxml2::XMLElement* NumCode = valute_root->FirstChildElement("NumCode");
+        tinyxml2::XMLElement* Name = valute_root->FirstChildElement("Name");
+        tinyxml2::XMLElement* VunitRate = valute_root->FirstChildElement("VunitRate");
 
         if (
             CharCode && NumCode && Name && VunitRate &&
@@ -51,13 +51,13 @@ std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
 
             ValuteMap.emplace(
             CharCode->GetText(),
-            Valute(NumCode->GetText(),
+            valute(NumCode->GetText(),
             Name->GetText(),
             std::stod(vr)));
         }
 
 
-        valute = valute->NextSiblingElement("Valute");
+        valute_root = valute_root->NextSiblingElement("Valute");
     }
 
 
@@ -65,14 +65,14 @@ std::map<std::string, Valute> Convertor::CreateMap(std::string_view data) {
 }
 
 
-double Convertor::ConvertValute(double count, std::string CharCode)
+double convertor::ConvertValute(double count, std::string CharCode)
 {
     double VunitRate = ValuteMap.at(CharCode).GetVunitRate();
     return count * VunitRate;
 }
 
 
-double Convertor::ConvertValuteToValute(double count, std::string CharCode1, std::string CharCode2)
+double convertor::ConvertValuteToValute(double count, std::string CharCode1, std::string CharCode2)
 {
     if (CharCode1 == CharCode2) throw std::logic_error("currency is the same");
 

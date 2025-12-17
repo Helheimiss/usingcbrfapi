@@ -6,15 +6,15 @@
 #include "valute.h"
 
 
-class Convertor
+class convertor
 {
 private:
 
-    std::map<std::string, Valute> ValuteMap;
-    static std::map<std::string, Valute> CreateMap(std::string_view data);
+    std::map<std::string, valute> ValuteMap;
+    static std::map<std::string, valute> CreateMap(std::string_view data);
 public:
-    Convertor(std::string_view data);
-    ~Convertor() = default;
+    convertor(std::string_view data);
+    ~convertor() = default;
 
 
     static void FormatFPU(std::string& Str, char NewCh) noexcept(false);
